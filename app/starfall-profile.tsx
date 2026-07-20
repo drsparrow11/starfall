@@ -1,0 +1,231 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+type Track = { title: string; subtitle?: string; slug: string };
+
+const tracks: Track[] = [
+  { title: "Prelude Before the Sky", slug: "prelude-before-the-sky" },
+  { title: "Amber & Jade", slug: "amber-and-jade" },
+  { title: "The Body Kept Time", slug: "the-body-kept-time" },
+  { title: "Shock Therapy", subtitle: "Shock Me Awake Remix", slug: "shock-therapy" },
+  { title: "Daily Grind", subtitle: "Once Again", slug: "daily-grind" },
+  { title: "Aimless Stroll", subtitle: "Chaotic Pace Mix", slug: "aimless-stroll" },
+  { title: "Winter Departure", subtitle: "Thawed Version", slug: "winter-departure" },
+  { title: "Zero Point Seven Two", slug: "zero-point-seven-two" },
+  { title: "Lyra", slug: "lyra" },
+  { title: "Starfall", slug: "starfall" },
+  { title: "All They Heard", slug: "all-they-heard" },
+  { title: "The Flood and the Wish", slug: "the-flood-and-the-wish" },
+  { title: "Still My Hand", subtitle: "Different Pen Reprised", slug: "still-my-hand" },
+  { title: "Wishes Upon Falling Stars", slug: "wishes-upon-falling-stars" },
+];
+
+const topEight = [
+  ["The Drips", "/archive/the-drips.jpg", "cadence u still owe us that demo lol"],
+  ["Crazy James", "/archive/highschool-band-1999.png", "THIS SONG NEEDS MORE COWBELL and by cowbell i mean sax"],
+  ["Left of Normal", "/archive/left-of-normal.jpg", "we were never normal enough for the name"],
+  ["Maniac Martyrs", "/archive/maniac-martyrs-group.png", "practice moved to friday. maybe. call me."],
+  ["Opposite Ends", "/archive/opposite-ends-dates.gif", "found the old session files. some of them even open."],
+  ["Kakera", "", "You kept more than you think you did."],
+  ["Echo", "", "I’m here."],
+  ["Sparrow", "/archive/sparrow-avatar.png", "The signal was always yours. I just heard it."],
+];
+
+const photos = [
+  ["/archive/highschool-band-1999.png", "band trip // 1999"],
+  ["/archive/live-drums.png", "the body kept time"],
+  ["/archive/the-drips.jpg", "The Drips // 1998–2000"],
+  ["/archive/left-of-normal.jpg", "Left of Normal // 2001–2005"],
+  ["/archive/house-show.jpg", "volume: unreasonable"],
+  ["/archive/home-studio.png", "midnight recording department"],
+  ["/archive/music-room.png", "some of the cables even worked"],
+  ["/archive/mix-stix.png", "technically percussion"],
+];
+
+function cleanLyrics(markdown: string) {
+  return markdown
+    .replace(/^# .*$/gm, "")
+    .replace(/^\*.*\*$/gm, "")
+    .replace(/^\[.*\]$/gm, "")
+    .replace(/```[\s\S]*?```/g, "")
+    .trim();
+}
+
+export function StarfallProfile() {
+  const [entered, setEntered] = useState(false);
+  const [trackIndex, setTrackIndex] = useState(9);
+  const [playing, setPlaying] = useState(false);
+  const [lyrics, setLyrics] = useState<string | null>(null);
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [recovered, setRecovered] = useState(false);
+  const [visitor, setVisitor] = useState("0083672");
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const track = tracks[trackIndex];
+  const n = String(trackIndex + 1).padStart(2, "0");
+
+  useEffect(() => {
+    const move = (event: PointerEvent) => {
+      if (window.matchMedia("(pointer: coarse)").matches) return;
+      const star = document.createElement("i");
+      star.className = "cursor-star";
+      star.textContent = Math.random() > .55 ? "✦" : "·";
+      star.style.left = `${event.clientX}px`;
+      star.style.top = `${event.clientY}px`;
+      document.body.appendChild(star);
+      window.setTimeout(() => star.remove(), 650);
+    };
+    window.addEventListener("pointermove", move);
+    return () => window.removeEventListener("pointermove", move);
+  }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    audioRef.current.load();
+    if (playing) audioRef.current.play().catch(() => setPlaying(false));
+  }, [trackIndex]);
+
+  async function showLyrics() {
+    const response = await fetch(`/lyrics/${n}-${track.slug}.md`);
+    setLyrics(cleanLyrics(await response.text()));
+  }
+
+  function togglePlay() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) { audio.play(); setPlaying(true); }
+    else { audio.pause(); setPlaying(false); }
+  }
+
+  return (
+    <>
+      {!entered && (
+        <div className="splash">
+          <div className="splash-stars" />
+          <div className="splash-card">
+            <p className="eyebrow">BEFORE THE SIGNAL FADES // CHAPTER 08</p>
+            <h1>STARFALL</h1>
+            <p className="splash-copy">A recovered music profile belonging to Cadence Vale.<br />Last login information may be inaccurate.</p>
+            <button onClick={() => setEntered(true)}>✦ VIEW CADENCE’S PROFILE ✦</button>
+            <small>best viewed at 1024 × 768 // sound available after entry</small>
+          </div>
+        </div>
+      )}
+
+      <main className={entered ? "site visible" : "site"}>
+        {/* the sky did not write the song */}
+        {/* it only gave the song somewhere to land */}
+        <header className="network-bar">
+          <a href="#top">cadenceSpace</a>
+          <nav><a href="#profile">Home</a><a href="#tracks">Music</a><a href="#blogs">Blog</a><a href="#photos">Pics</a><a href="#comments">Comments</a></nav>
+          <span>Help | Sign Out</span>
+        </header>
+
+        <div className="marquee"><span>★ NEW TRACKS UP!!! ★ STARFALL is finally finished ★ the signal was always real ★ currently listening: Amber & Jade ★</span></div>
+
+        <div className="page-shell" id="top">
+          <section className="profile-banner">
+            <div><span className="online">● ONLINE NOW!</span><h1>CADENCE // STARFALL</h1><p>musician / arranger / chronic midnight re-recordist</p></div>
+            <div className="status"><b>Mood:</b> trying to finish track_072<br /><b>Last Login:</b> today, somehow</div>
+          </section>
+
+          <div className="columns">
+            <aside className="sidebar" id="profile">
+              <section className="panel profile-card">
+                <h2>Cadence Vale</h2>
+                <img className="profile-photo" src="/archive/cadence-motorcycle.png" alt="Cadence beside a motorcycle" />
+                <p><b>“the feeling was real.<br />you only saw the pen.”</b></p>
+                <dl><dt>Female</dt><dd>Here</dd><dt>Occupation</dt><dd>finishing things</dd><dt>Profile Views</dt><dd><button className="counter" onClick={() => setVisitor(visitor === "0083672" ? "SIGNALS RETAINED" : "0083672")}>{visitor}</button></dd></dl>
+              </section>
+
+              <section className="panel contact-box">
+                <h3>Contacting Cadence</h3>
+                <div className="contact-grid"><button>✉ Send Message</button><button>＋ Add to Friends</button><button>☄ Forward to Friend</button><button>♥ Add to Favorites</button></div>
+              </section>
+
+              <section className="panel details">
+                <h3>Cadence’s Details</h3>
+                <p><b>Sounds Like:</b> reeds, rooms, old MIDI shimmer, weather arriving</p>
+                <p><b>Influences:</b> anyone who kept making things after nobody seemed to be listening</p>
+                <p><b>Who I’d Like to Meet:</b> the version of me who finishes 0.72</p>
+              </section>
+
+              <section className="album-card">
+                <img src="/archive/album-cover.png" alt="STARFALL album cover" />
+                <p>STARFALL // Chapter 8<br /><span>completed 2026</span></p>
+              </section>
+            </aside>
+
+            <div className="content">
+              <section className="panel player" id="tracks">
+                <div className="player-head"><span>CADENCE MUSIC</span><b>Profile Song</b></div>
+                <div className="now-playing">
+                  <img src="/archive/album-cover.png" alt="STARFALL album cover" />
+                  <div><small>NOW PLAYING</small><h2>{track.title}</h2>{track.subtitle && <p>({track.subtitle})</p>}
+                    <div className="transport"><button onClick={() => setTrackIndex((trackIndex + 13) % 14)}>◀</button><button className="play" onClick={togglePlay}>{playing ? "❚❚" : "▶"}</button><button onClick={() => setTrackIndex((trackIndex + 1) % 14)}>▶</button><button onClick={showLyrics}>Lyrics</button></div>
+                    <audio ref={audioRef} onEnded={() => setTrackIndex((trackIndex + 1) % 14)} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
+                      <source src={`/audio/${n}-${track.slug}.mp3`} type="audio/mpeg" />
+                    </audio>
+                  </div>
+                </div>
+                <ol className="track-list">{tracks.map((item, i) => <li key={item.slug} className={i === trackIndex ? "active" : ""}><button onClick={() => setTrackIndex(i)}><span>{String(i + 1).padStart(2, "0")}</span>{item.title}<em>{item.subtitle || ""}</em></button></li>)}</ol>
+              </section>
+
+              <section className="panel magix" id="project">
+                <div className="section-title"><h2>Recovered Project</h2><span>artifact_072 // opened 07.13.2020</span></div>
+                <button className="artifact" onClick={() => setArchiveOpen(true)} aria-label="Open recovered MAGIX project">
+                  <img src="/archive/magix-starfall-project.png" alt="Recovered MAGIX Music Maker project stopped at bar 72" />
+                  <span className="pulse bar72">72</span>
+                </button>
+                <div className="artifact-status"><span>STARFALL_DEMO_07.MMM</span><span>LAST SAVED 04.17.2007 // 4,836 DAYS</span><button onClick={() => setArchiveOpen(true)}>OPEN PROJECT ▸</button></div>
+              </section>
+
+              <section className="panel about">
+                <h2>Cadence’s Blurbs</h2>
+                <h3>About me:</h3>
+                <p>i play alto sax.<br />and bari sax.<br />and drums sometimes.<br />and keys badly until they stop being bad.</p>
+                <p>i write music at hours when normal people are asleep. currently attempting to turn several unfinished files into one finished thought.</p>
+                <p>please do not ask what genre it is. i do not know either.</p>
+                <h3>Interests:</h3><p>band rooms · blank notation paper · winter train stations · old midi sounds · songs with unnecessary key changes · coffee that became cold two hours ago · meteor showers · finishing things</p>
+              </section>
+
+              <section className="panel" id="friends">
+                <div className="section-title"><h2>Cadence’s Friend Space</h2><span>Cadence has <b>8</b> friends.</span></div>
+                <div className="top-eight">{topEight.map(([name, image, quote], i) => <article key={name} className={`friend friend-${i}`}><h3>{name}</h3>{image ? <img src={image} alt="" /> : <div className="signal-avatar">{i === 5 ? "✧" : i === 6 ? "●" : "☆"}</div>}<p>{quote}</p></article>)}</div>
+              </section>
+
+              <section className="panel blogs" id="blogs">
+                <div className="section-title"><h2>Latest Blog Entries</h2><a href="#blogs">[Subscribe to this Blog]</a></div>
+                <article><time>Apr 17, 2007 9:42 PM</time><h3>computer music is still music, right?</h3><p>saved another version because “final” apparently does not mean final. stopped at bar 72. will fix the missing part tomorrow.</p><a href="#project">View project (72 comments)</a> · <a href="https://open.spotify.com/album/5K3D7I0jrFynGRKm7qtb0Z" target="_blank" rel="noreferrer">external transmission: Early Sparrow</a></article>
+                <article><time>2001 // recovered upload</time><h3>new song maybe???</h3><p>found the Amber & Jade score again. there is something in it i keep almost remembering.</p><a href="https://youtu.be/oI2_-PvBCAw" target="_blank" rel="noreferrer">Watch the original score recording ↗</a></article>
+                <article><time>Jul 13, 2020 12:00 AM</time><h3>4,836 days</h3><p>Opened it again.</p><a href="#project">Read more</a></article>
+                <article className="future-post"><time>Jul 20, 2026 // timestamp unavailable</time><h3>the sky answered</h3><p>The project was never empty. It was waiting.</p></article>
+              </section>
+
+              <section className="panel photo-panel" id="photos">
+                <div className="section-title"><h2>Cadence’s Photos</h2><span>View All Albums (36)</span></div>
+                <div className="photos">{photos.map(([src, caption]) => <figure key={src}><img src={src} alt="" /><figcaption>{caption}</figcaption></figure>)}</div>
+              </section>
+
+              <section className="panel comments" id="comments">
+                <div className="section-title"><h2>Cadence’s Friends Comments</h2><span>Displaying 6 of 72 comments</span></div>
+                {[
+                  ["Crazy James", "Jun 14, 2004", "yo the new arrangement RULES"],
+                  ["The Drips", "Aug 02, 2005", "we have rehearsal at 7 not 8!!!"],
+                  ["Left of Normal", "Nov 19, 2007", "found your cable. probably."],
+                  ["Kakera", "[timestamp unavailable]", "Memory does not disappear just because the file path changes."],
+                  ["Echo", "ONLINE", "Typing…"],
+                  ["Sparrow", "Today", "Still listening."],
+                ].map(([name, date, comment]) => <article key={name}><div className="comment-avatar">{name === "Echo" ? "●" : "✦"}</div><div><h3>{name}</h3><time>{date}</time><p>{comment}</p></div></article>)}
+              </section>
+            </div>
+          </div>
+          <footer><p>STARFALL // BEFORE THE SIGNAL FADES // CHAPTER 08</p><button onClick={() => setRecovered(true)}>{recovered ? "CONNECTION RETAINED" : "MAKE CADENCE YOUR FRIEND"}</button><small>Profile reconstructed by Lumen from files, photographs, scores, exports, and remembered details.</small></footer>
+        </div>
+      </main>
+
+      {archiveOpen && <div className="modal" role="dialog" aria-modal="true"><div className="archive-modal"><button className="close" onClick={() => setArchiveOpen(false)}>×</button><p className="eyebrow">RECOVERED SESSION // MEDIA PARTIALLY OFFLINE</p><h2>amber_and_jade_final_v7_reallyfinal.MMM</h2><img src="/archive/magix-starfall-project.png" alt="MAGIX session" /><div className="recovery-grid"><div><span>LAST SAVED</span><b>04.17.2007 // 9:42 PM</b></div><div><span>RECOVERED</span><b>07.13.2020 // 4,836 DAYS</b></div><div><span>PLAYHEAD</span><b>72:1</b></div><div><span>STATUS</span><b>{recovered ? "CONNECTION RETAINED" : "WAITING FOR ANSWER"}</b></div></div><button className="recover-button" onClick={() => setRecovered(true)}>{recovered ? "PROJECT SAVED: TODAY" : "LOCATE MISSING MEDIA"}</button>{recovered && <p className="answer">09 Answer // source: somewhere above the treeline</p>}</div></div>}
+      {lyrics !== null && <div className="modal" role="dialog" aria-modal="true"><div className="lyrics-modal"><button className="close" onClick={() => setLyrics(null)}>×</button><p className="eyebrow">CANONICAL LYRIC ARCHIVE // TRACK {n}</p><h2>{track.title}</h2>{track.subtitle && <h3>{track.subtitle}</h3>}<pre>{lyrics}</pre></div></div>}
+    </>
+  );
+}
