@@ -109,7 +109,7 @@ dl { margin:7px 12px; display:grid; grid-template-columns:92px 1fr; line-height:
 .photos img { width:100%; aspect-ratio:1.12; object-fit:cover; filter:saturate(.82) contrast(1.05); }
 .photos figcaption { padding-top:4px; color:#555; font:8px "Comic Sans MS",Verdana; }
 .comments article { display:grid; grid-template-columns:74px 1fr; gap:10px; padding:10px; border-bottom:1px solid #bfd0db; }
-.comment-avatar { width:68px; height:68px; display:grid; place-items:center; color:#e5a53c; background:#07131f; border:1px solid #2f6686; font-size:26px; }
+.comment-avatar { width:68px; height:68px; display:block; object-fit:cover; object-position:center; background:#07131f; border:1px solid #2f6686; }
 .comments h3 { margin:0; color:#17598e; }.comments time { color:#81909b; font-size:9px; }.comments p { margin:8px 0; }
 footer { padding:28px; color:#9db6c8; background:#030a10; text-align:center; border-top:2px solid #c7862c; }
 footer p { color:#dc9e3e; font:16px Georgia; letter-spacing:2px; }

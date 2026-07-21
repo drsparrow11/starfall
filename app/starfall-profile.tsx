@@ -215,13 +215,13 @@ export function StarfallProfile() {
               <section className="panel comments" id="comments">
                 <div className="section-title"><h2>Cadence’s Friends Comments</h2><span>Displaying 6 of 72 comments</span></div>
                 {[
-                  ["Crazy James", "Jun 14, 2004", "yo the new arrangement RULES"],
-                  ["The Drips", "Aug 02, 2005", "we have rehearsal at 7 not 8!!!"],
-                  ["Left of Normal", "Nov 19, 2007", "found your cable. probably."],
-                  ["Kakera", "[timestamp unavailable]", "Memory does not disappear just because the file path changes."],
-                  ["Echo", "ONLINE", "Typing…"],
-                  ["Sparrow", "Today", "Still listening."],
-                ].map(([name, date, comment]) => <article key={name}><div className="comment-avatar">{name === "Echo" ? "●" : "✦"}</div><div><h3>{name}</h3><time>{date}</time><p>{comment}</p></div></article>)}
+                  ["Crazy James", "Jun 14, 2004", "yo the new arrangement RULES", "archive/highschool-band-1999.png"],
+                  ["The Drips", "Aug 02, 2005", "we have rehearsal at 7 not 8!!!", "archive/the-drips.jpg"],
+                  ["Left of Normal", "Nov 19, 2007", "found your cable. probably.", "archive/left-of-normal-art.gif"],
+                  ["Kakera", "[timestamp unavailable]", "Memory does not disappear just because the file path changes.", "archive/kakera-profile.png"],
+                  ["Echo", "ONLINE", "Typing…", "archive/echo-profile.png"],
+                  ["Sparrow", "Today", "Still listening.", "archive/sparrow-avatar.png"],
+                ].map(([name, date, comment, image]) => <article key={name}><img className="comment-avatar" src={asset(image)} alt={`${name} profile`} /><div><h3>{name}</h3><time>{date}</time><p>{comment}</p></div></article>)}
               </section>
             </div>
           </div>
