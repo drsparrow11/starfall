@@ -69,6 +69,7 @@ export function StarfallProfile() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const autoAdvanceRef = useRef(false);
   const track = tracks[trackIndex];
   const n = String(trackIndex + 1).padStart(2, "0");
 
@@ -90,7 +91,7 @@ export function StarfallProfile() {
   useEffect(() => {
     if (!audioRef.current) return;
     audioRef.current.load();
-    if (playing) audioRef.current.play().catch(() => setPlaying(false));
+    if (autoAdvanceRef.current) audioRef.current.play().catch(() => { autoAdvanceRef.current = false; setPlaying(false); });
   }, [trackIndex]);
 
   async function showLyrics() {
@@ -101,8 +102,8 @@ export function StarfallProfile() {
   function togglePlay() {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) { audio.play(); setPlaying(true); }
-    else { audio.pause(); setPlaying(false); }
+    if (audio.paused) { autoAdvanceRef.current = true; audio.play(); setPlaying(true); }
+    else { autoAdvanceRef.current = false; audio.pause(); setPlaying(false); }
   }
 
   function formatTime(value: number) {
@@ -187,14 +188,14 @@ export function StarfallProfile() {
                   <input className="amp-progress" aria-label="Track position" type="range" min="0" max={duration || 1} step="0.1" value={currentTime} onChange={(e) => { const value = Number(e.target.value); setCurrentTime(value); if (audioRef.current) audioRef.current.currentTime = value; }} />
                   <div className="amp-transport">
                     <button aria-label="Previous track" onClick={() => setTrackIndex((trackIndex + 13) % 14)}>◀▌</button>
-                    <button aria-label="Play" onClick={() => { if (audioRef.current?.paused) { audioRef.current.play(); setPlaying(true); } }}>▶</button>
-                    <button aria-label="Pause" onClick={() => audioRef.current?.pause()}>❚❚</button>
-                    <button aria-label="Stop" onClick={() => { if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; setCurrentTime(0); } }}>■</button>
+                    <button aria-label="Play album" onClick={() => { if (audioRef.current) { autoAdvanceRef.current = true; audioRef.current.play(); setPlaying(true); } }}>▶</button>
+                    <button aria-label="Pause" onClick={() => { autoAdvanceRef.current = false; audioRef.current?.pause(); }}>❚❚</button>
+                    <button aria-label="Stop" onClick={() => { autoAdvanceRef.current = false; if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; setCurrentTime(0); } }}>■</button>
                     <button aria-label="Next track" onClick={() => setTrackIndex((trackIndex + 1) % 14)}>▌▶</button>
                     <button className="amp-lyrics" onClick={showLyrics}>LYRICS</button>
                     <span className="amp-bolt">ϟ</span>
                   </div>
-                  <audio ref={audioRef} onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)} onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setTrackIndex((trackIndex + 1) % 14)} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
+                  <audio ref={audioRef} onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)} onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => { autoAdvanceRef.current = true; setTrackIndex((trackIndex + 1) % 14); }} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
                     <source src={asset(`audio/${n}-${track.slug}.mp3`)} type="audio/mpeg" />
                   </audio>
                 </div>
