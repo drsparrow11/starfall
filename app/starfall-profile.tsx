@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 
 type Track = { title: string; subtitle?: string; slug: string };
 
@@ -65,6 +66,8 @@ export function StarfallProfile() {
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [recovered, setRecovered] = useState(false);
   const [visitor, setVisitor] = useState("0083672");
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const track = tracks[trackIndex];
   const n = String(trackIndex + 1).padStart(2, "0");
@@ -100,6 +103,12 @@ export function StarfallProfile() {
     if (!audio) return;
     if (audio.paused) { audio.play(); setPlaying(true); }
     else { audio.pause(); setPlaying(false); }
+  }
+
+  function formatTime(value: number) {
+    if (!Number.isFinite(value)) return "00:00";
+    const minutes = Math.floor(value / 60);
+    return `${String(minutes).padStart(2, "0")}:${String(Math.floor(value % 60)).padStart(2, "0")}`;
   }
 
   return (
@@ -162,16 +171,32 @@ export function StarfallProfile() {
             </aside>
 
             <div className="content">
-              <section className="panel player" id="tracks">
-                <div className="player-head"><span>CADENCE MUSIC</span><b>Profile Song</b></div>
-                <div className="now-playing">
-                  <img src={asset("archive/album-cover.png")} alt="STARFALL album cover" />
-                  <div><small>NOW PLAYING</small><h2>{track.title}</h2>{track.subtitle && <p>({track.subtitle})</p>}
-                    <div className="transport"><button onClick={() => setTrackIndex((trackIndex + 13) % 14)}>◀</button><button className="play" onClick={togglePlay}>{playing ? "❚❚" : "▶"}</button><button onClick={() => setTrackIndex((trackIndex + 1) % 14)}>▶</button><button onClick={showLyrics}>Lyrics</button></div>
-                    <audio ref={audioRef} onEnded={() => setTrackIndex((trackIndex + 1) % 14)} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
-                      <source src={asset(`audio/${n}-${track.slug}.mp3`)} type="audio/mpeg" />
-                    </audio>
+              <section className="panel player lyra-amp" id="tracks">
+                <div className="amp-titlebar"><span className="amp-spark">✦</span><i /><b>LYRA-AMP</b><i /><span className="amp-window">● ▪ ×</span></div>
+                <div className="amp-console">
+                  <div className="amp-visualizer" aria-hidden="true">
+                    <div className={`amp-bars ${playing ? "is-playing" : ""}`}>{Array.from({ length: 22 }, (_, i) => <span key={i} style={{ "--bar": `${18 + ((i * 37) % 72)}%` } as CSSProperties} />)}</div>
+                    <div className="amp-clock"><span>{playing ? "▶" : "■"}</span>{formatTime(currentTime)}</div>
+                    <div className="amp-wave" />
                   </div>
+                  <div className="amp-readout">
+                    <div className="amp-marquee"><span>{n}. {track.title.toUpperCase()}{track.subtitle ? ` — ${track.subtitle.toUpperCase()}` : ""}</span></div>
+                    <div className="amp-specs"><b>096</b> kbps <b>44</b> kHz <span>STEREO</span></div>
+                    <div className="amp-sliders"><label>VOL<input type="range" min="0" max="1" step="0.01" defaultValue="0.85" onChange={(e) => { if (audioRef.current) audioRef.current.volume = Number(e.target.value); }} /></label><label>BAL<input type="range" min="-1" max="1" step="0.1" defaultValue="0" /></label></div>
+                  </div>
+                  <input className="amp-progress" aria-label="Track position" type="range" min="0" max={duration || 1} step="0.1" value={currentTime} onChange={(e) => { const value = Number(e.target.value); setCurrentTime(value); if (audioRef.current) audioRef.current.currentTime = value; }} />
+                  <div className="amp-transport">
+                    <button aria-label="Previous track" onClick={() => setTrackIndex((trackIndex + 13) % 14)}>◀▌</button>
+                    <button aria-label="Play" onClick={() => { if (audioRef.current?.paused) { audioRef.current.play(); setPlaying(true); } }}>▶</button>
+                    <button aria-label="Pause" onClick={() => audioRef.current?.pause()}>❚❚</button>
+                    <button aria-label="Stop" onClick={() => { if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; setCurrentTime(0); } }}>■</button>
+                    <button aria-label="Next track" onClick={() => setTrackIndex((trackIndex + 1) % 14)}>▌▶</button>
+                    <button className="amp-lyrics" onClick={showLyrics}>LYRICS</button>
+                    <span className="amp-bolt">ϟ</span>
+                  </div>
+                  <audio ref={audioRef} onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)} onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setTrackIndex((trackIndex + 1) % 14)} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
+                    <source src={asset(`audio/${n}-${track.slug}.mp3`)} type="audio/mpeg" />
+                  </audio>
                 </div>
                 <ol className="track-list">{tracks.map((item, i) => <li key={item.slug} className={i === trackIndex ? "active" : ""}><button onClick={() => setTrackIndex(i)}><span>{String(i + 1).padStart(2, "0")}</span>{item.title}<em>{item.subtitle || ""}</em></button></li>)}</ol>
               </section>
