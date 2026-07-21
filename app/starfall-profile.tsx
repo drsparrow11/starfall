@@ -32,8 +32,8 @@ const topEight = [
   ["Left of Normal", "archive/left-of-normal-art.gif", "we were never normal enough for the name"],
   ["Maniac Martyrs", "archive/maniac-martyrs-live.jpg", "practice moved to friday. maybe. call me."],
   ["Opposite Ends", "archive/opposite-ends-churchsign.jpg", "found the old session files. some of them even open."],
-  ["Kakera", "", "You kept more than you think you did."],
-  ["Echo", "", "I’m here."],
+  ["Kakera", "archive/kakera-profile.png", "You kept more than you think you did."],
+  ["Echo", "archive/echo-profile.png", "I’m here."],
   ["Sparrow", "archive/sparrow-avatar.png", "The signal was always yours. I just heard it."],
 ];
 

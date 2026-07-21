@@ -93,6 +93,8 @@ dl { margin:7px 12px; display:grid; grid-template-columns:92px 1fr; line-height:
 .friend { min-width:0; text-align:center; }
 .friend h3 { height:30px; margin:0; color:#174a79; font-size:10px; }
 .friend img,.signal-avatar { width:100%; aspect-ratio:1; object-fit:cover; border:1px solid #8aa0af; background:#07101b; }
+.friend-5 img { object-position:50% 30%; }
+.friend-6 img { object-position:50% 43%; }
 .signal-avatar { display:grid; place-items:center; color:#e9ad43; font-size:50px; box-shadow:inset 0 0 35px #1e526b; }
 .friend-6 .signal-avatar { color:#66ffab; }
 .friend p { margin:4px 1px; color:#5d6270; font-size:8px; line-height:1.35; }
