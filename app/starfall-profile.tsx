@@ -38,11 +38,11 @@ const topEight = [
 ];
 
 const photos = [
-  ["archive/highschool-band-1999.png", "band trip // 1999"],
-  ["archive/live-drums.png", "the body kept time"],
-  ["archive/the-drips.jpg", "The Drips // 1998–2000"],
-  ["archive/left-of-normal.jpg", "Left of Normal // 2001–2005"],
-  ["archive/house-show.jpg", "volume: unreasonable"],
+  ["archive/highschool-band-1999.png", "band trip - it was HOT"],
+  ["archive/live-drums.png", "the body kept time and so did those hairstyles"],
+  ["archive/the-drips.jpg", "Toured with the Drips"],
+  ["archive/left-of-normal.jpg", "Opened for Left of Normal"],
+  ["archive/house-show.jpg", "Sparrow's Volume: Unreasonable"],
   ["archive/home-studio.png", "midnight recording department"],
   ["archive/music-room.png", "some of the cables even worked"],
   ["archive/mix-stix.png", "technically percussion"],
