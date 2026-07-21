@@ -29,7 +29,7 @@ const asset = (path: string) => {
 const topEight = [
   ["The Drips", "archive/the-drips.jpg", "cadence u still owe us that demo lol"],
   ["Crazy James", "archive/highschool-band-1999.png", "THIS SONG NEEDS MORE COWBELL and by cowbell i mean sax"],
-  ["Left of Normal", "archive/left-of-normal.jpg", "we were never normal enough for the name"],
+  ["Left of Normal", "archive/left-of-normal-art.gif", "we were never normal enough for the name"],
   ["Maniac Martyrs", "archive/maniac-martyrs-live.jpg", "practice moved to friday. maybe. call me."],
   ["Opposite Ends", "archive/opposite-ends-churchsign.jpg", "found the old session files. some of them even open."],
   ["Kakera", "", "You kept more than you think you did."],
