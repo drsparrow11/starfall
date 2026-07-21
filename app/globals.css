@@ -33,7 +33,7 @@ a { color:#1a4d84; text-decoration:underline; }
 .marquee span { display:inline-block; padding-left:100%; animation:marquee 26s linear infinite; }
 @keyframes marquee { to { transform:translateX(-100%); } }
 .page-shell { width:min(1040px,100%); margin:0 auto; background:#dce7ee; box-shadow:0 0 70px #000; }
-.profile-banner { min-height:105px; padding:18px 24px; display:flex; justify-content:space-between; align-items:flex-end; color:white; background:linear-gradient(90deg,rgba(3,11,19,.72),rgba(5,15,27,.94)),url('/archive/tracklist-montage.png') center 44%; background-size:cover; border-bottom:4px solid #d8902d; }
+.profile-banner { min-height:105px; padding:18px 24px; display:flex; justify-content:space-between; align-items:flex-end; color:white; background-position:center 44%; background-size:cover; border-bottom:4px solid #d8902d; }
 .profile-banner h1 { margin:2px 0; color:#f2b34b; font:34px Georgia,serif; letter-spacing:3px; }
 .profile-banner p { margin:0; color:#c7dce6; }
 .online { color:#62ffad; font:bold 10px "Courier New"; }

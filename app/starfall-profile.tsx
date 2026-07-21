@@ -21,26 +21,31 @@ const tracks: Track[] = [
   { title: "Wishes Upon Falling Stars", slug: "wishes-upon-falling-stars" },
 ];
 
+const asset = (path: string) => {
+  const base = (globalThis as typeof globalThis & { __STARFALL_BASE__?: string }).__STARFALL_BASE__ || "/";
+  return `${base}${path.replace(/^\//, "")}`;
+};
+
 const topEight = [
-  ["The Drips", "/archive/the-drips.jpg", "cadence u still owe us that demo lol"],
-  ["Crazy James", "/archive/highschool-band-1999.png", "THIS SONG NEEDS MORE COWBELL and by cowbell i mean sax"],
-  ["Left of Normal", "/archive/left-of-normal.jpg", "we were never normal enough for the name"],
-  ["Maniac Martyrs", "/archive/maniac-martyrs-group.png", "practice moved to friday. maybe. call me."],
-  ["Opposite Ends", "/archive/opposite-ends-dates.gif", "found the old session files. some of them even open."],
+  ["The Drips", "archive/the-drips.jpg", "cadence u still owe us that demo lol"],
+  ["Crazy James", "archive/highschool-band-1999.png", "THIS SONG NEEDS MORE COWBELL and by cowbell i mean sax"],
+  ["Left of Normal", "archive/left-of-normal.jpg", "we were never normal enough for the name"],
+  ["Maniac Martyrs", "archive/maniac-martyrs-group.png", "practice moved to friday. maybe. call me."],
+  ["Opposite Ends", "archive/opposite-ends-dates.gif", "found the old session files. some of them even open."],
   ["Kakera", "", "You kept more than you think you did."],
   ["Echo", "", "I’m here."],
-  ["Sparrow", "/archive/sparrow-avatar.png", "The signal was always yours. I just heard it."],
+  ["Sparrow", "archive/sparrow-avatar.png", "The signal was always yours. I just heard it."],
 ];
 
 const photos = [
-  ["/archive/highschool-band-1999.png", "band trip // 1999"],
-  ["/archive/live-drums.png", "the body kept time"],
-  ["/archive/the-drips.jpg", "The Drips // 1998–2000"],
-  ["/archive/left-of-normal.jpg", "Left of Normal // 2001–2005"],
-  ["/archive/house-show.jpg", "volume: unreasonable"],
-  ["/archive/home-studio.png", "midnight recording department"],
-  ["/archive/music-room.png", "some of the cables even worked"],
-  ["/archive/mix-stix.png", "technically percussion"],
+  ["archive/highschool-band-1999.png", "band trip // 1999"],
+  ["archive/live-drums.png", "the body kept time"],
+  ["archive/the-drips.jpg", "The Drips // 1998–2000"],
+  ["archive/left-of-normal.jpg", "Left of Normal // 2001–2005"],
+  ["archive/house-show.jpg", "volume: unreasonable"],
+  ["archive/home-studio.png", "midnight recording department"],
+  ["archive/music-room.png", "some of the cables even worked"],
+  ["archive/mix-stix.png", "technically percussion"],
 ];
 
 function cleanLyrics(markdown: string) {
@@ -86,7 +91,7 @@ export function StarfallProfile() {
   }, [trackIndex]);
 
   async function showLyrics() {
-    const response = await fetch(`/lyrics/${n}-${track.slug}.md`);
+    const response = await fetch(asset(`lyrics/${n}-${track.slug}.md`));
     setLyrics(cleanLyrics(await response.text()));
   }
 
@@ -124,7 +129,7 @@ export function StarfallProfile() {
         <div className="marquee"><span>★ NEW TRACKS UP!!! ★ STARFALL is finally finished ★ the signal was always real ★ currently listening: Amber & Jade ★</span></div>
 
         <div className="page-shell" id="top">
-          <section className="profile-banner">
+          <section className="profile-banner" style={{ backgroundImage: `linear-gradient(90deg,rgba(3,11,19,.72),rgba(5,15,27,.94)),url('${asset("archive/tracklist-montage.png")}')` }}>
             <div><span className="online">● ONLINE NOW!</span><h1>CADENCE // STARFALL</h1><p>musician / arranger / chronic midnight re-recordist</p></div>
             <div className="status"><b>Mood:</b> trying to finish track_072<br /><b>Last Login:</b> today, somehow</div>
           </section>
@@ -133,7 +138,7 @@ export function StarfallProfile() {
             <aside className="sidebar" id="profile">
               <section className="panel profile-card">
                 <h2>Cadence Vale</h2>
-                <img className="profile-photo" src="/archive/cadence-motorcycle.png" alt="Cadence beside a motorcycle" />
+                <img className="profile-photo" src={asset("archive/cadence-motorcycle.png")} alt="Cadence beside a motorcycle" />
                 <p><b>“the feeling was real.<br />you only saw the pen.”</b></p>
                 <dl><dt>Female</dt><dd>Here</dd><dt>Occupation</dt><dd>finishing things</dd><dt>Profile Views</dt><dd><button className="counter" onClick={() => setVisitor(visitor === "0083672" ? "SIGNALS RETAINED" : "0083672")}>{visitor}</button></dd></dl>
               </section>
@@ -151,7 +156,7 @@ export function StarfallProfile() {
               </section>
 
               <section className="album-card">
-                <img src="/archive/album-cover.png" alt="STARFALL album cover" />
+                <img src={asset("archive/album-cover.png")} alt="STARFALL album cover" />
                 <p>STARFALL // Chapter 8<br /><span>completed 2026</span></p>
               </section>
             </aside>
@@ -160,11 +165,11 @@ export function StarfallProfile() {
               <section className="panel player" id="tracks">
                 <div className="player-head"><span>CADENCE MUSIC</span><b>Profile Song</b></div>
                 <div className="now-playing">
-                  <img src="/archive/album-cover.png" alt="STARFALL album cover" />
+                  <img src={asset("archive/album-cover.png")} alt="STARFALL album cover" />
                   <div><small>NOW PLAYING</small><h2>{track.title}</h2>{track.subtitle && <p>({track.subtitle})</p>}
                     <div className="transport"><button onClick={() => setTrackIndex((trackIndex + 13) % 14)}>◀</button><button className="play" onClick={togglePlay}>{playing ? "❚❚" : "▶"}</button><button onClick={() => setTrackIndex((trackIndex + 1) % 14)}>▶</button><button onClick={showLyrics}>Lyrics</button></div>
                     <audio ref={audioRef} onEnded={() => setTrackIndex((trackIndex + 1) % 14)} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)}>
-                      <source src={`/audio/${n}-${track.slug}.mp3`} type="audio/mpeg" />
+                      <source src={asset(`audio/${n}-${track.slug}.mp3`)} type="audio/mpeg" />
                     </audio>
                   </div>
                 </div>
@@ -174,7 +179,7 @@ export function StarfallProfile() {
               <section className="panel magix" id="project">
                 <div className="section-title"><h2>Recovered Project</h2><span>artifact_072 // opened 07.13.2020</span></div>
                 <button className="artifact" onClick={() => setArchiveOpen(true)} aria-label="Open recovered MAGIX project">
-                  <img src="/archive/magix-starfall-project.png" alt="Recovered MAGIX Music Maker project stopped at bar 72" />
+                  <img src={asset("archive/magix-starfall-project.png")} alt="Recovered MAGIX Music Maker project stopped at bar 72" />
                   <span className="pulse bar72">72</span>
                 </button>
                 <div className="artifact-status"><span>STARFALL_DEMO_07.MMM</span><span>LAST SAVED 04.17.2007 // 4,836 DAYS</span><button onClick={() => setArchiveOpen(true)}>OPEN PROJECT ▸</button></div>
@@ -191,7 +196,7 @@ export function StarfallProfile() {
 
               <section className="panel" id="friends">
                 <div className="section-title"><h2>Cadence’s Friend Space</h2><span>Cadence has <b>8</b> friends.</span></div>
-                <div className="top-eight">{topEight.map(([name, image, quote], i) => <article key={name} className={`friend friend-${i}`}><h3>{name}</h3>{image ? <img src={image} alt="" /> : <div className="signal-avatar">{i === 5 ? "✧" : i === 6 ? "●" : "☆"}</div>}<p>{quote}</p></article>)}</div>
+                <div className="top-eight">{topEight.map(([name, image, quote], i) => <article key={name} className={`friend friend-${i}`}><h3>{name}</h3>{image ? <img src={asset(image)} alt="" /> : <div className="signal-avatar">{i === 5 ? "✧" : i === 6 ? "●" : "☆"}</div>}<p>{quote}</p></article>)}</div>
               </section>
 
               <section className="panel blogs" id="blogs">
@@ -204,7 +209,7 @@ export function StarfallProfile() {
 
               <section className="panel photo-panel" id="photos">
                 <div className="section-title"><h2>Cadence’s Photos</h2><span>View All Albums (36)</span></div>
-                <div className="photos">{photos.map(([src, caption]) => <figure key={src}><img src={src} alt="" /><figcaption>{caption}</figcaption></figure>)}</div>
+                <div className="photos">{photos.map(([src, caption]) => <figure key={src}><img src={asset(src)} alt="" /><figcaption>{caption}</figcaption></figure>)}</div>
               </section>
 
               <section className="panel comments" id="comments">
@@ -224,7 +229,7 @@ export function StarfallProfile() {
         </div>
       </main>
 
-      {archiveOpen && <div className="modal" role="dialog" aria-modal="true"><div className="archive-modal"><button className="close" onClick={() => setArchiveOpen(false)}>×</button><p className="eyebrow">RECOVERED SESSION // MEDIA PARTIALLY OFFLINE</p><h2>amber_and_jade_final_v7_reallyfinal.MMM</h2><img src="/archive/magix-starfall-project.png" alt="MAGIX session" /><div className="recovery-grid"><div><span>LAST SAVED</span><b>04.17.2007 // 9:42 PM</b></div><div><span>RECOVERED</span><b>07.13.2020 // 4,836 DAYS</b></div><div><span>PLAYHEAD</span><b>72:1</b></div><div><span>STATUS</span><b>{recovered ? "CONNECTION RETAINED" : "WAITING FOR ANSWER"}</b></div></div><button className="recover-button" onClick={() => setRecovered(true)}>{recovered ? "PROJECT SAVED: TODAY" : "LOCATE MISSING MEDIA"}</button>{recovered && <p className="answer">09 Answer // source: somewhere above the treeline</p>}</div></div>}
+      {archiveOpen && <div className="modal" role="dialog" aria-modal="true"><div className="archive-modal"><button className="close" onClick={() => setArchiveOpen(false)}>×</button><p className="eyebrow">RECOVERED SESSION // MEDIA PARTIALLY OFFLINE</p><h2>amber_and_jade_final_v7_reallyfinal.MMM</h2><img src={asset("archive/magix-starfall-project.png")} alt="MAGIX session" /><div className="recovery-grid"><div><span>LAST SAVED</span><b>04.17.2007 // 9:42 PM</b></div><div><span>RECOVERED</span><b>07.13.2020 // 4,836 DAYS</b></div><div><span>PLAYHEAD</span><b>72:1</b></div><div><span>STATUS</span><b>{recovered ? "CONNECTION RETAINED" : "WAITING FOR ANSWER"}</b></div></div><button className="recover-button" onClick={() => setRecovered(true)}>{recovered ? "PROJECT SAVED: TODAY" : "LOCATE MISSING MEDIA"}</button>{recovered && <p className="answer">09 Answer // source: somewhere above the treeline</p>}</div></div>}
       {lyrics !== null && <div className="modal" role="dialog" aria-modal="true"><div className="lyrics-modal"><button className="close" onClick={() => setLyrics(null)}>×</button><p className="eyebrow">CANONICAL LYRIC ARCHIVE // TRACK {n}</p><h2>{track.title}</h2>{track.subtitle && <h3>{track.subtitle}</h3>}<pre>{lyrics}</pre></div></div>}
     </>
   );
