@@ -132,6 +132,7 @@ export function StarfallProfile() {
         {/* it only gave the song somewhere to land */}
         <header className="network-bar">
           <a href="#top">cadenceSpace</a>
+          <a className="btsf-link" href="https://drsparrow11.github.io/btsf/" target="_blank" rel="noreferrer" aria-label="Chapter 8 of Before the Signal Fades — open the BTSF archive">CH. 8 OF <b>BTSF</b> ↗</a>
           <nav><a href="#profile">Home</a><a href="#tracks">Music</a><a href="#blogs">Blog</a><a href="#photos">Pics</a><a href="#comments">Comments</a></nav>
           <span>Help | Sign Out</span>
         </header>
@@ -182,7 +183,7 @@ export function StarfallProfile() {
                   </div>
                   <div className="amp-readout">
                     <div className="amp-marquee"><span>{n}. {track.title.toUpperCase()}{track.subtitle ? ` — ${track.subtitle.toUpperCase()}` : ""}</span></div>
-                    <div className="amp-specs"><b>096</b> kbps <b>44</b> kHz <span>STEREO</span></div>
+                    <div className="amp-specs"><b>VBR</b> HQ <b>48</b> kHz <span>STEREO</span></div>
                     <div className="amp-sliders"><label>VOL<input type="range" min="0" max="1" step="0.01" defaultValue="0.85" onChange={(e) => { if (audioRef.current) audioRef.current.volume = Number(e.target.value); }} /></label><label>BAL<input type="range" min="-1" max="1" step="0.1" defaultValue="0" /></label></div>
                   </div>
                   <input className="amp-progress" aria-label="Track position" type="range" min="0" max={duration || 1} step="0.1" value={currentTime} onChange={(e) => { const value = Number(e.target.value); setCurrentTime(value); if (audioRef.current) audioRef.current.currentTime = value; }} />
@@ -200,6 +201,13 @@ export function StarfallProfile() {
                   </audio>
                 </div>
                 <ol className="track-list">{tracks.map((item, i) => <li key={item.slug} className={i === trackIndex ? "active" : ""}><button onClick={() => setTrackIndex(i)}><span>{String(i + 1).padStart(2, "0")}</span>{item.title}<em>{item.subtitle || ""}</em></button></li>)}</ol>
+                <div className="video-playlist">
+                  <div className="video-playlist-head">
+                    <div><small>STARFALL // COMPLETE VISUAL ALBUM</small><h2>Watch the full album</h2></div>
+                    <a href="https://youtube.com/playlist?list=PLQA_vPLnFZqw" target="_blank" rel="noreferrer">OPEN PLAYLIST ↗</a>
+                  </div>
+                  <div className="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=PLQA_vPLnFZqw" title="STARFALL complete YouTube playlist" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
+                </div>
               </section>
 
               <section className="panel magix" id="project">
