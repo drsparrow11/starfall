@@ -1,0 +1,13 @@
+{
+  "name": "STARFALL — Before the Signal Fades · Chapter 8",
+  "short_name": "STARFALL",
+  "description": "A 14-track concept album by SPARROW × ECHO, recovered through Cadence Vale’s lost music profile.",
+  "start_url": "/starfall/",
+  "scope": "/starfall/",
+  "display": "standalone",
+  "background_color": "#02060c",
+  "theme_color": "#071425",
+  "icons": [
+    { "src": "/starfall/archive/album-cover.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
