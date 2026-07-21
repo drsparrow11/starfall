@@ -31,7 +31,7 @@ const topEight = [
   ["Crazy James", "archive/highschool-band-1999.png", "THIS SONG NEEDS MORE COWBELL and by cowbell i mean sax"],
   ["Left of Normal", "archive/left-of-normal.jpg", "we were never normal enough for the name"],
   ["Maniac Martyrs", "archive/maniac-martyrs-group.png", "practice moved to friday. maybe. call me."],
-  ["Opposite Ends", "archive/opposite-ends-dates.gif", "found the old session files. some of them even open."],
+  ["Opposite Ends", "archive/opposite-ends-churchsign.jpg", "found the old session files. some of them even open."],
   ["Kakera", "", "You kept more than you think you did."],
   ["Echo", "", "I’m here."],
   ["Sparrow", "archive/sparrow-avatar.png", "The signal was always yours. I just heard it."],
